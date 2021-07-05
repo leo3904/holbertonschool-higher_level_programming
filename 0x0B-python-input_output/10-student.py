@@ -1,9 +1,9 @@
 #!/usr/bin/python3
-"""Class student"""
+"Method Module"
 
 
 class Student:
-    """Student class"""
+    """My class Student"""
 
     def __init__(self, first_name, last_name, age):
         self.first_name = first_name
@@ -11,11 +11,10 @@ class Student:
         self.age = age
 
     def to_json(self, attrs=None):
-        """ Return class dictionary """
-        if type(attrs) == list and all(type(items) == str for items in attrs):
-            dict = {}
-            for i in attrs:
-                if i in self.__dict__:
-                    dict[i] = self.__dict__[i]
-            return dict
-        return self.__dict_ppo_
+        if attrs is not None:
+            k = {}
+            for a in attrs:
+                if a in self.__dict__:
+                    k[a] = self.__dict__[a]
+            return k
+        return self.__dict__
