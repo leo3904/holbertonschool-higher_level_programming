@@ -1,59 +1,37 @@
 #include "lists.h"
 
-listint_t *reverse_listint(listint_t **head);
-int is_palindrome(listint_t **head);
-
-listint_t *reverse_listint(listint_t **head)
+/**
+ * _compare_extreme_nodes - function that use a recursion to check palindromic
+ * @head: head of linked list
+ * @tail: the node that will be the tail of a singly linked list
+ * Return: 0 if it is not a palindrome, 1 if it is a palindrome
+ */
+int _compare_extreme_nodes(listint_t **head, listint_t *tail)
 {
-	listint_t *node = *head, *next, *prev = NULL;
+	int result;
 
-	while (node)
-	{
-		next = node->next;
-		node->next = prev;
-		prev = node;
-		node = next;
-	}
-
-	*head = prev;
-	return (*head);
-}
-
-int is_palindrome(listint_t **head)
-{
-	listint_t *tmp, *rev, *mid;
-	size_t size = 0, i;
-
-	if (*head == NULL || (*head)->next == NULL)
+	if (!tail)
 		return (1);
 
-	tmp = *head;
-	while (tmp)
-	{
-		size++;
-		tmp = tmp->next;
-	}
-
-	tmp = *head;
-	for (i = 0; i < (size / 2) - 1; i++)
-		tmp = tmp->next;
-
-	if ((size % 2) == 0 && tmp->n != tmp->next->n)
+	result = _compare_extreme_nodes(head, tail->next);
+	if (result == 0)
 		return (0);
+	result = ((*head)->n == tail->n);
+	*head = (*head)->next;
 
-	tmp = tmp->next->next;
-	rev = reverse_listint(&tmp);
-	mid = rev;
+	return (result);
+}
 
-	tmp = *head;
-	while (rev)
-	{
-		if (tmp->n != rev->n)
-			return (0);
-		tmp = tmp->next;
-		rev = rev->next;
-	}
-	reverse_listint(&mid);
-
-	return (1);
+/**
+ * is_palindrome - is palindrome a simply linked list without using a while
+ *
+ * @head: head of linked list
+ * Return: call another function to call the last node in less time
+ * 0 if it is not a palindrome, 1 if it is a palindrome
+ */
+int is_palindrome(listint_t **head)
+{
+	if (!head)
+		return (0);
+	return (_compare_extreme_nodes(head, *head));
 }
